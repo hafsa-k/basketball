@@ -2,14 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class netPassingTrough : MonoBehaviour
 {
+   
     public bool win = false; // Cette variable indique si le joueur a gagné ou non.
 
     private bool hitTop = false; // Cette variable indique si la balle a touché Collider_top.
     private bool hitBottom = false; // Cette variable indique si la balle a touché Collider_bottom.
+    public OpenDoor openDoorScript;
+    
 
-    // Cette fonction est appelée lorsque la balle entre en collision avec un autre objet.
+
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Collider_top"))
@@ -21,9 +26,10 @@ public class netPassingTrough : MonoBehaviour
             if (hitBottom)
             {
                 win = false;
-                Debug.Log("Perdu");
                 hitBottom = false;
                 hitTop = false;
+                Debug.Log("LOSER");
+                
             }
         }
         else if (other.CompareTag("Collider_bottom"))
@@ -31,11 +37,33 @@ public class netPassingTrough : MonoBehaviour
             hitBottom = true;
             if(hitTop){
                 win = true;
-                Debug.Log("Win !");
                 hitBottom = false;
                 hitTop = false;
-           } // Si la balle touche d'abord Collider_bottom, définissez hitBottom sur true.
+                Debug.Log("WINNER");
+                OpenDoor();
+                
+           } 
             
         }
     }
+     private void OpenDoor()
+    {
+            if (win)
+            {
+                Debug.Log("sesame ouvre-toi");
+
+                //INVOKE = ADD DELAY ANIMATION BUT DONT ACCEPT POINT
+               Invoke("DoAnimation", 2f);
+            }
+            else
+            {
+                Debug.Log("desolé yasmine, ya pas de moula");
+            }
+        }
+
+    void DoAnimation() {
+        openDoorScript.AnimationDoorOpen();
+    }
+
+
 }
